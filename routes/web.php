@@ -39,6 +39,10 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     Route::get('/admin/warakawuri/inactivate/{id}', 'WarakawuriController@inactivate')->name('admin.warakawuri.inactivate');
     Route::post('/admin/warakawuri/to-inactivate', 'WarakawuriController@toInactivate')->name('admin.warakawuri.to-inactivate');
     Route::post('/admin/warakawuri/delete', 'WarakawuriController@delete')->name('admin.warakawuri.delete');
+
+    // Rekap
+    Route::get('/admin/rekap', 'RekapController@index')->name('admin.rekap.index');
+    Route::get('/admin/rekap/detail/{id}', 'RekapController@detail')->name('admin.rekap.detail');
 });
 
 \Ajifatur\Helpers\RouteExt::auth();

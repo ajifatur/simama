@@ -44,7 +44,7 @@
                                 </td>
                                 <td align="center">
                                     <div class="btn-group">
-                                        <a href="{{ route('admin.purnakarya.inactivate', ['id' => $p->id]) }}" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" title="Nonaktifkan"><i class="bi-x"></i></a>
+                                        <a href="{{ route('admin.purnakarya.inactivate', ['id' => $p->id]) }}" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" title="Nonaktifkan"><i class="bi-x-circle"></i></a>
                                         <a href="{{ route('admin.purnakarya.edit', ['id' => $p->id]) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
                                         <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $p->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
                                     </div>
