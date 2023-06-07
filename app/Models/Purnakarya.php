@@ -22,7 +22,6 @@ class Purnakarya extends Model
      * @var array
      */
     protected $fillable = [
-        
     ];
     
     /**

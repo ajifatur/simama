@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('auth.login');
+    // return redirect()->route('auth.login');
+    phpinfo();
 });
 
 Route::group(['middleware' => ['faturhelper.admin']], function() {
@@ -28,6 +29,7 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     Route::get('/admin/purnakarya/inactivate/{id}', 'PurnakaryaController@inactivate')->name('admin.purnakarya.inactivate');
     Route::post('/admin/purnakarya/to-inactivate', 'PurnakaryaController@toInactivate')->name('admin.purnakarya.to-inactivate');
     Route::post('/admin/purnakarya/delete', 'PurnakaryaController@delete')->name('admin.purnakarya.delete');
+    // Route::get('/admin/purnakarya/import', 'PurnakaryaController@import')->name('admin.purnakarya.import');
 
     // Warakawuri
     Route::get('/admin/warakawuri/active', 'WarakawuriController@active')->name('admin.warakawuri.active');
@@ -39,10 +41,13 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     Route::get('/admin/warakawuri/inactivate/{id}', 'WarakawuriController@inactivate')->name('admin.warakawuri.inactivate');
     Route::post('/admin/warakawuri/to-inactivate', 'WarakawuriController@toInactivate')->name('admin.warakawuri.to-inactivate');
     Route::post('/admin/warakawuri/delete', 'WarakawuriController@delete')->name('admin.warakawuri.delete');
+    // Route::get('/admin/warakawuri/import', 'WarakawuriController@import')->name('admin.warakawuri.import');
 
     // Rekap
     Route::get('/admin/rekap', 'RekapController@index')->name('admin.rekap.index');
-    Route::get('/admin/rekap/detail/{id}', 'RekapController@detail')->name('admin.rekap.detail');
+    // Route::get('/admin/rekap/detail/{id}', 'RekapController@detail')->name('admin.rekap.detail');
+    Route::get('/admin/rekap/export-all', 'RekapController@exportAll')->name('admin.rekap.export-all');
+    Route::get('/admin/rekap/export/{id}', 'RekapController@export')->name('admin.rekap.export');
 });
 
 \Ajifatur\Helpers\RouteExt::auth();

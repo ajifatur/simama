@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Excel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -11,6 +13,7 @@ use App\Models\Purnakarya;
 use App\Models\Unit;
 use App\Models\Alamat;
 use App\Models\Warakawuri;
+use App\Exports\WredatamaExport;
 
 class RekapController extends Controller
 {
@@ -49,22 +52,68 @@ class RekapController extends Controller
         // Unit
         $unit = Unit::findOrFail($id);
 
-        // Purnakarya aktif
-        $purnakarya_aktif = Purnakarya::where('unit_id','=',$unit->id)->where('tmt_pensiun','<=',date('y-m-d'))->orderBy('nama','asc')->get()->toArray();
-
-        // Purnakarya MD
-        $purnakarya_md = Purnakarya::where('unit_id','=',$unit->id)->where('tmt_pensiun','=',null)->where('tanggal_md','<',date('y-m-d'))->orderBy('nama','asc')->get()->toArray();
-
         // Purnakarya
-        $purnakarya = array_merge($purnakarya_aktif, $purnakarya_md);
-        $key_values = array_column($purnakarya, 'nama'); 
-        array_multisort($key_values, SORT_ASC, $purnakarya);
+        $purnakarya = Purnakarya::where('unit_id','=',$unit->id)->where('status','1')->orderBy('nama','asc')->get();
+
+        // Warakawuri
+        $warakawuri = Warakawuri::whereHas('purnakarya', function (Builder $query) use ($unit) {
+            return $query->where('unit_id','=',$unit->id);
+        })->where('status','1')->orderBy('nama','asc')->get();
 
         // View
         return view('admin/rekap/detail', [
             'unit' => $unit,
             'purnakarya' => $purnakarya,
+            'warakawuri' => $warakawuri,
         ]);
+    }
+    
+    /**
+     * Export to Excel
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function export(Request $request, $id)
+    {
+		ini_set("memory_limit", "-1");
+
+        // Unit
+        $unit = Unit::findOrFail($id);
+		
+        // Purnakarya
+        $purnakarya = Purnakarya::where('unit_id','=',$unit->id)->where('status','1')->orderBy('nama','asc')->get();
+
+        // Warakawuri
+        $warakawuri = Warakawuri::whereHas('purnakarya', function (Builder $query) use ($unit) {
+            return $query->where('unit_id','=',$unit->id);
+        })->where('status','1')->orderBy('nama','asc')->get();
+
+        return Excel::download(new WredatamaExport([
+            'unit' => $unit,
+            'purnakarya' => $purnakarya,
+            'warakawuri' => $warakawuri,
+        ]), 'Data Wredatama.xlsx');
+    }
+    
+    /**
+     * Export to Excel
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function exportAll(Request $request)
+    {
+		ini_set("memory_limit", "-1");
+		
+        // Purnakarya
+        $purnakarya = Purnakarya::where('status','1')->orderBy('nama','asc')->get();
+
+        // Warakawuri
+        $warakawuri = Warakawuri::has('purnakarya')->where('status','1')->orderBy('nama','asc')->get();
+
+        return Excel::download(new WredatamaExport([
+            'purnakarya' => $purnakarya,
+            'warakawuri' => $warakawuri,
+        ]), 'Data Wredatama.xlsx');
     }
 
     /**

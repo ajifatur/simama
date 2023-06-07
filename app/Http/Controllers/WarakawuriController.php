@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -11,6 +12,7 @@ use App\Models\Warakawuri;
 use App\Models\Purnakarya;
 use App\Models\Unit;
 use App\Models\Alamat;
+use App\Imports\WarakawuriImport;
 
 class WarakawuriController extends Controller
 {
@@ -224,5 +226,49 @@ class WarakawuriController extends Controller
             return redirect()->route('admin.purnakarya.active')->with(['message' => 'Berhasil menghapus data.']);
         elseif($purnakarya->status == 0)
             return redirect()->route('admin.purnakarya.inactive')->with(['message' => 'Berhasil menghapus data.']);
+    }
+
+    /**
+     * Import.
+     *
+     * @return void
+     */
+    public function import()
+    {
+        $array = Excel::toArray(new WarakawuriImport, public_path('spreadsheets/Warakawuri.xlsx'));
+
+        if(count($array)>0) {
+            foreach($array[0] as $data) {
+                // Unit
+                $unit = Unit::where('nama','=',$data[1])->first();
+
+                // Simpan purnakarya
+                $purnakarya = new Purnakarya;
+                $purnakarya->unit_id = $unit ? $unit->id : 0;
+                $purnakarya->nama = $data[0];
+                $purnakarya->gender = $data[2];
+                $purnakarya->no_telepon = $data[3];
+                $purnakarya->tmt_pensiun = null;
+                $purnakarya->status = 0;
+                $purnakarya->tanggal_md = $data[4] != '' ? $data[4] : null;
+                $purnakarya->save();
+    
+                // Simpan alamat
+                $alamat = new Alamat;
+                $alamat->purnakarya_id = $purnakarya->id;
+                $alamat->alamat = $data[5];
+                $alamat->kota = $data[6];
+                $alamat->tanggal_pindah = null;
+                $alamat->save();
+    
+                // Simpan warakawuri
+                $warakawuri = new Warakawuri;
+                $warakawuri->purnakarya_id = $purnakarya->id;
+                $warakawuri->nama = $data[7];
+                $warakawuri->status = 1;
+                $warakawuri->tanggal_md = null;
+                $warakawuri->save();
+            }
+        }
     }
 }
