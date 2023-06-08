@@ -1,4 +1,4 @@
-@if($data['all'] != true)
+@if($data['all'] == false)
 <table border="1" style="width: 100%">
     <thead>
         <tr>
@@ -6,6 +6,8 @@
             <th width="50">Nama</th>
             <th width="15">Status</th>
             <th width="15">Unit</th>
+            <th width="50">Alamat</th>
+            <th width="15">Kota</th>
             <th colspan="2">Tanda Tangan</th>
         </tr>
     </thead>
@@ -17,6 +19,8 @@
             <td>{{ $p->nama }}</td>
             <td>Purnakarya</td>
             <td>{{ $p->unit->nama }}</td>
+			<td>{{ $p->alamat()->first()->alamat }}</td>
+			<td>{{ $p->alamat()->first()->kota }}</td>
             @if($i % 2 == 1)
                 <td width="20" align="left">{{ $i }}.</td>
                 <td width="20" align="left"></td>
@@ -33,6 +37,8 @@
             <td>{{ $w->nama }}</td>
             <td>Warakawuri</td>
             <td>{{ $w->purnakarya->unit->nama }}</td>
+			<td>{{ $w->purnakarya->alamat()->first()->alamat }}</td>
+			<td>{{ $w->purnakarya->alamat()->first()->kota }}</td>
             @if($i % 2 == 1)
                 <td width="20" align="left">{{ $i }}.</td>
                 <td width="20" align="left"></td>
@@ -53,6 +59,8 @@
             <th width="50">Nama</th>
             <th width="15">Status</th>
             <th width="15">Unit</th>
+            <th width="50">Alamat</th>
+            <th width="15">Kota</th>
             <th colspan="2">Tanda Tangan</th>
         </tr>
     </thead>
@@ -71,6 +79,8 @@
 				<td>{{ $p->nama }}</td>
 				<td>Purnakarya</td>
 				<td>{{ $p->unit->nama }}</td>
+				<td>{{ $p->alamat()->first()->alamat }}</td>
+				<td>{{ $p->alamat()->first()->kota }}</td>
 				@if($i % 2 == 1)
 					<td width="20" align="left">{{ $i }}.</td>
 					<td width="20" align="left"></td>
@@ -87,6 +97,8 @@
 				<td>{{ $w->nama }}</td>
 				<td>Warakawuri</td>
 				<td>{{ $w->purnakarya->unit->nama }}</td>
+				<td>{{ $w->purnakarya->alamat()->first()->alamat }}</td>
+				<td>{{ $w->purnakarya->alamat()->first()->kota }}</td>
 				@if($i % 2 == 1)
 					<td width="20" align="left">{{ $i }}.</td>
 					<td width="20" align="left"></td>
