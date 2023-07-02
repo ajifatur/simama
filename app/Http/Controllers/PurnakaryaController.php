@@ -258,6 +258,86 @@ class PurnakaryaController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function address($id)
+    {
+        // Check the access
+        // has_access(__METHOD__, Auth::user()->role_id);
+
+        // Purnakarya
+        $purnakarya = Purnakarya::findOrFail($id);
+
+        // View
+        return view('admin/purnakarya/address', [
+            'purnakarya' => $purnakarya
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateAddress(Request $request)
+    {
+        // Validation
+        $validator = Validator::make($request->all(), [
+            // 'tanggal' => 'required',
+        ]);
+        
+        // Check errors
+        if($validator->fails()) {
+            // Back to form page with validation error messages
+            return redirect()->back()->withErrors($validator->errors())->withInput();
+        }
+        else {
+            // Purnakarya
+            $purnakarya = Purnakarya::find($request->purnakarya_id);
+
+            foreach($request->get('id') as $key=>$id) {
+                // Simpan alamat purnakarya
+                $alamat = Alamat::find($request->id[$key]);
+                if(!$alamat) $alamat = new Alamat;
+                $alamat->id = $request->id[$key];
+                $alamat->purnakarya_id = $purnakarya->id;
+                $alamat->alamat_diketahui = $request->alamat_diketahui[$key];
+                $alamat->alamat = $request->alamat[$key];
+                $alamat->kota = $request->kota[$key];
+                $alamat->save();
+            }
+
+            // Redirect
+            return redirect()->route('admin.purnakarya.address', ['id' => $purnakarya->id])->with(['message' => 'Berhasil mengupdate data.']);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteAddress(Request $request)
+    {
+        // Check the access
+        // has_access(__METHOD__, Auth::user()->role_id);
+        
+        // Alamat
+        $alamat = Alamat::find($request->id);
+
+        // Menghapus alamat
+        $alamat->delete();
+        
+        // Redirect
+        return redirect()->back()->with(['message' => 'Berhasil menghapus data.']);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \Illuminate\Http\Request  $request

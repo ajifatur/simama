@@ -27,6 +27,9 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     Route::post('/admin/purnakarya/update', 'PurnakaryaController@update')->name('admin.purnakarya.update');
     Route::get('/admin/purnakarya/inactivate/{id}', 'PurnakaryaController@inactivate')->name('admin.purnakarya.inactivate');
     Route::post('/admin/purnakarya/to-inactivate', 'PurnakaryaController@toInactivate')->name('admin.purnakarya.to-inactivate');
+    Route::get('/admin/purnakarya/address/{id}', 'PurnakaryaController@address')->name('admin.purnakarya.address');
+    Route::post('/admin/purnakarya/address/update', 'PurnakaryaController@updateAddress')->name('admin.purnakarya.address.update');
+    Route::post('/admin/purnakarya/address/delete', 'PurnakaryaController@deleteAddress')->name('admin.purnakarya.address.delete');
     Route::post('/admin/purnakarya/delete', 'PurnakaryaController@delete')->name('admin.purnakarya.delete');
     // Route::get('/admin/purnakarya/import', 'PurnakaryaController@import')->name('admin.purnakarya.import');
 
@@ -39,6 +42,9 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     Route::post('/admin/warakawuri/update', 'WarakawuriController@update')->name('admin.warakawuri.update');
     Route::get('/admin/warakawuri/inactivate/{id}', 'WarakawuriController@inactivate')->name('admin.warakawuri.inactivate');
     Route::post('/admin/warakawuri/to-inactivate', 'WarakawuriController@toInactivate')->name('admin.warakawuri.to-inactivate');
+    Route::get('/admin/warakawuri/address/{id}', 'WarakawuriController@address')->name('admin.warakawuri.address');
+    Route::post('/admin/warakawuri/address/update', 'WarakawuriController@updateAddress')->name('admin.warakawuri.address.update');
+    Route::post('/admin/warakawuri/address/delete', 'WarakawuriController@deleteAddress')->name('admin.warakawuri.address.delete');
     Route::post('/admin/warakawuri/delete', 'WarakawuriController@delete')->name('admin.warakawuri.delete');
     // Route::get('/admin/warakawuri/import', 'WarakawuriController@import')->name('admin.warakawuri.import');
 

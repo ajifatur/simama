@@ -35,7 +35,11 @@
                                 <td align="center"><input type="checkbox" class="form-check-input checkbox-one"></td>
                                 <td>{{ $p->nama }}</td>
                                 <td>
-                                    {{ $p->alamat()->first()->alamat }}, {{ $p->alamat()->first()->kota }}
+                                    @if($p->alamat()->latest('created_at')->first()->alamat_diketahui == 1)
+                                        {{ $p->alamat()->latest('created_at')->first()->alamat }}, {{ $p->alamat()->latest('created_at')->first()->kota }}
+                                    @else
+                                        <span class="text-danger">Alamat tidak diketahui</span>
+                                    @endif
                                 </td>
                                 <td>{{ $p->unit->nama }}</td>
                                 <td>
@@ -45,6 +49,7 @@
                                 <td align="center">
                                     <div class="btn-group">
                                         <a href="{{ route('admin.purnakarya.edit', ['id' => $p->id]) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit"><i class="bi-pencil"></i></a>
+                                        <a href="{{ route('admin.purnakarya.address', ['id' => $p->id]) }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Alamat"><i class="bi-pin-map"></i></a>
                                         <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $p->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
                                     </div>
                                 </td>

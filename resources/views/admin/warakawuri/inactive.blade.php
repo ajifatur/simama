@@ -36,7 +36,11 @@
                                 <td align="center"><input type="checkbox" class="form-check-input checkbox-one"></td>
                                 <td>{{ $w->nama }}</td>
                                 <td>
-                                    {{ $w->purnakarya->alamat()->first()->alamat }}, {{ $w->purnakarya->alamat()->first()->kota }}
+                                    @if($w->purnakarya->alamat()->latest('created_at')->first()->alamat_diketahui == 1)
+                                        {{ $w->purnakarya->alamat()->latest('created_at')->first()->alamat }}, {{ $w->purnakarya->alamat()->latest('created_at')->first()->kota }}
+                                    @else
+                                        <span class="text-danger">Alamat tidak diketahui</span>
+                                    @endif
                                 </td>
                                 <td>{{ $w->purnakarya->unit->nama }}</td>
                                 <td>

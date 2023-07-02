@@ -35,7 +35,11 @@
                                 <td align="center"><input type="checkbox" class="form-check-input checkbox-one"></td>
                                 <td>{{ $w->nama }}</td>
                                 <td>
-                                    {{ $w->purnakarya->alamat()->first()->alamat }}, {{ $w->purnakarya->alamat()->first()->kota }}
+                                    @if($w->purnakarya->alamat()->latest('created_at')->first()->alamat_diketahui == 1)
+                                        {{ $w->purnakarya->alamat()->latest('created_at')->first()->alamat }}, {{ $w->purnakarya->alamat()->latest('created_at')->first()->kota }}
+                                    @else
+                                        <span class="text-danger">Alamat tidak diketahui</span>
+                                    @endif
                                 </td>
                                 <td>{{ $w->purnakarya->unit->nama }}</td>
                                 <td>
@@ -45,6 +49,7 @@
                                 <td align="center">
                                     <div class="btn-group">
                                         <a href="{{ route('admin.warakawuri.inactivate', ['id' => $w->id]) }}" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" title="Nonaktifkan"><i class="bi-x-circle"></i></a>
+                                        <a href="{{ route('admin.warakawuri.address', ['id' => $w->id]) }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Alamat"><i class="bi-pin-map"></i></a>
                                         <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="{{ $w->id }}" data-bs-toggle="tooltip" title="Hapus"><i class="bi-trash"></i></a>
                                     </div>
                                 </td>

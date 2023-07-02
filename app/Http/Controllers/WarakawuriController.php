@@ -28,7 +28,7 @@ class WarakawuriController extends Controller
         // has_access(__METHOD__, Auth::user()->role_id);
 
         // Warakawuri
-        $warakawuri = Warakawuri::has('purnakarya')->where('status','1')->orderBy('created_at','desc')->get();
+        $warakawuri = Warakawuri::has('purnakarya')->where('status','1')->orderBy('tanggal_md','desc')->get();
 
         // View
         return view('admin/warakawuri/active', [
@@ -199,6 +199,86 @@ class WarakawuriController extends Controller
             // Redirect
             return redirect()->route('admin.warakawuri.inactive')->with(['message' => 'Berhasil mengupdate data.']);
         }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function address($id)
+    {
+        // Check the access
+        // has_access(__METHOD__, Auth::user()->role_id);
+
+        // Warakawuri
+        $warakawuri = Warakawuri::findOrFail($id);
+
+        // View
+        return view('admin/warakawuri/address', [
+            'warakawuri' => $warakawuri
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateAddress(Request $request)
+    {
+        // Validation
+        $validator = Validator::make($request->all(), [
+            // 'tanggal' => 'required',
+        ]);
+        
+        // Check errors
+        if($validator->fails()) {
+            // Back to form page with validation error messages
+            return redirect()->back()->withErrors($validator->errors())->withInput();
+        }
+        else {
+            // Warakawuri
+            $warakawuri = Warakawuri::find($request->warakawuri_id);
+
+            foreach($request->get('id') as $key=>$id) {
+                // Simpan alamat warakawuri
+                $alamat = Alamat::find($request->id[$key]);
+                if(!$alamat) $alamat = new Alamat;
+                $alamat->id = $request->id[$key];
+                $alamat->purnakarya_id = $warakawuri->purnakarya_id;
+                $alamat->alamat_diketahui = $request->alamat_diketahui[$key];
+                $alamat->alamat = $request->alamat[$key];
+                $alamat->kota = $request->kota[$key];
+                $alamat->save();
+            }
+
+            // Redirect
+            return redirect()->route('admin.warakawuri.address', ['id' => $warakawuri->id])->with(['message' => 'Berhasil mengupdate data.']);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteAddress(Request $request)
+    {
+        // Check the access
+        // has_access(__METHOD__, Auth::user()->role_id);
+        
+        // Alamat
+        $alamat = Alamat::find($request->id);
+
+        // Menghapus alamat
+        $alamat->delete();
+        
+        // Redirect
+        return redirect()->back()->with(['message' => 'Berhasil menghapus data.']);
     }
 
     /**

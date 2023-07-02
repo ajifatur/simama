@@ -19,8 +19,13 @@
             <td>{{ $p->nama }}</td>
             <td>Purnakarya</td>
             <td>{{ $p->unit->nama }}</td>
-			<td>{{ $p->alamat()->first()->alamat }}</td>
-			<td>{{ $p->alamat()->first()->kota }}</td>
+            @if($p->alamat()->latest('created_at')->first()->alamat_diketahui == 1)
+                <td>{{ $p->alamat()->latest('created_at')->first()->alamat }}</td>
+                <td>{{ $p->alamat()->latest('created_at')->first()->kota }}</td>
+            @else
+                <td>Alamat tidak diketahui</td>
+                <td>{{ $p->alamat()->latest('created_at')->first()->kota }}</td>
+            @endif
             @if($i % 2 == 1)
                 <td width="20" align="left">{{ $i }}.</td>
                 <td width="20" align="left"></td>
@@ -37,6 +42,13 @@
             <td>{{ $w->nama }}</td>
             <td>Warakawuri</td>
             <td>{{ $w->purnakarya->unit->nama }}</td>
+            @if($w->purnakarya->alamat()->latest('created_at')->first()->alamat_diketahui == 1)
+                <td>{{ $w->purnakarya->alamat()->latest('created_at')->first()->alamat }}</td>
+                <td>{{ $w->purnakarya->alamat()->latest('created_at')->first()->kota }}</td>
+            @else
+                <td>Alamat tidak diketahui</td>
+                <td>{{ $w->purnakarya->alamat()->latest('created_at')->first()->kota }}</td>
+            @endif
 			<td>{{ $w->purnakarya->alamat()->first()->alamat }}</td>
 			<td>{{ $w->purnakarya->alamat()->first()->kota }}</td>
             @if($i % 2 == 1)
@@ -79,8 +91,13 @@
 				<td>{{ $p->nama }}</td>
 				<td>Purnakarya</td>
 				<td>{{ $p->unit->nama }}</td>
-				<td>{{ $p->alamat()->first()->alamat }}</td>
-				<td>{{ $p->alamat()->first()->kota }}</td>
+                @if($p->alamat()->latest('created_at')->first()->alamat_diketahui == 1)
+                    <td>{{ $p->alamat()->latest('created_at')->first()->alamat }}</td>
+                    <td>{{ $p->alamat()->latest('created_at')->first()->kota }}</td>
+                @else
+                    <td>Alamat tidak diketahui</td>
+                    <td>{{ $p->alamat()->latest('created_at')->first()->kota }}</td>
+                @endif
 				@if($i % 2 == 1)
 					<td width="20" align="left">{{ $i }}.</td>
 					<td width="20" align="left"></td>
@@ -97,8 +114,13 @@
 				<td>{{ $w->nama }}</td>
 				<td>Warakawuri</td>
 				<td>{{ $w->purnakarya->unit->nama }}</td>
-				<td>{{ $w->purnakarya->alamat()->first()->alamat }}</td>
-				<td>{{ $w->purnakarya->alamat()->first()->kota }}</td>
+                @if($w->purnakarya->alamat()->latest('created_at')->first()->alamat_diketahui == 1)
+                    <td>{{ $w->purnakarya->alamat()->latest('created_at')->first()->alamat }}</td>
+                    <td>{{ $w->purnakarya->alamat()->latest('created_at')->first()->kota }}</td>
+                @else
+                    <td>Alamat tidak diketahui</td>
+                    <td>{{ $w->purnakarya->alamat()->latest('created_at')->first()->kota }}</td>
+                @endif
 				@if($i % 2 == 1)
 					<td width="20" align="left">{{ $i }}.</td>
 					<td width="20" align="left"></td>
