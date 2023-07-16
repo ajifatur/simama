@@ -155,12 +155,15 @@ class PurnakaryaController extends Controller
      */
     public function update(Request $request)
     {
+        // Purnakarya
+        $purnakarya = Purnakarya::find($request->id);
+        
         // Validation
         $validator = Validator::make($request->all(), [
             'nama' => 'required|max:200',
             'gender' => 'required',
             'unit' => 'required',
-            'tanggal' => 'required',
+            'tanggal' => $purnakarya->status == 1 ? 'required' : '',
         ]);
         
         // Check errors
@@ -170,7 +173,6 @@ class PurnakaryaController extends Controller
         }
         else {
             // Simpan purnakarya
-            $purnakarya = Purnakarya::find($request->id);
             $purnakarya->unit_id = $request->unit;
             $purnakarya->nama = $request->nama;
             $purnakarya->gender = $request->gender;
@@ -226,7 +228,7 @@ class PurnakaryaController extends Controller
     {
         // Validation
         $validator = Validator::make($request->all(), [
-            'tanggal' => 'required',
+            // 'tanggal' => 'required',
             'warakawuri' => 'required',
         ]);
         
@@ -249,6 +251,7 @@ class PurnakaryaController extends Controller
                 $warakawuri->nama = $request->nama;
                 $warakawuri->status = 1;
                 $warakawuri->tanggal_md = null;
+                $warakawuri->tanggal_md_pasangan = DateTimeExt::change($request->tanggal);
                 $warakawuri->save();
             }
 

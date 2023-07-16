@@ -27,12 +27,13 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-lg-2 col-md-3 col-form-label"><span id="label-tanggal">Tanggal Meninggal Dunia </span> <span class="text-danger">*</span></label>
+                        <label class="col-lg-2 col-md-3 col-form-label">Tanggal Meninggal Dunia</label>
                         <div class="col-lg-10 col-md-9">
                             <div class="input-group input-group-sm">
                                 <input type="text" name="tanggal" class="form-control form-control-sm {{ $errors->has('tanggal') ? 'border-danger' : '' }}" value="{{ date('d/m/Y', strtotime($warakawuri->tanggal_md)) }}" autocomplete="off" placeholder="dd/mm/yyyy">
                                 <span class="input-group-text"><i class="bi-calendar2"></i></span>
                             </div>
+                            <div class="small text-muted">Kosongi saja jika tanggal tidak diketahui.</div>
                             @if($errors->has('tanggal'))
                             <div class="small text-danger">{{ $errors->first('tanggal') }}</div>
                             @endif

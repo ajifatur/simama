@@ -28,7 +28,7 @@ class WarakawuriController extends Controller
         // has_access(__METHOD__, Auth::user()->role_id);
 
         // Warakawuri
-        $warakawuri = Warakawuri::has('purnakarya')->where('status','1')->orderBy('tanggal_md','desc')->get();
+        $warakawuri = Warakawuri::has('purnakarya')->where('status','1')->orderBy('tanggal_md_pasangan','desc')->get();
 
         // View
         return view('admin/warakawuri/active', [
@@ -48,7 +48,7 @@ class WarakawuriController extends Controller
         // has_access(__METHOD__, Auth::user()->role_id);
 
         // Warakawuri
-        $warakawuri = Warakawuri::has('purnakarya')->where('status','0')->orderBy('tanggal_md','desc')->get();
+        $warakawuri = Warakawuri::has('purnakarya')->where('status','0')->orderBy('tanggal_md','desc')->orderBy('tanggal_md_pasangan','desc')->get();
 
         // View
         return view('admin/warakawuri/inactive', [
@@ -90,7 +90,7 @@ class WarakawuriController extends Controller
             'alamat' => 'required',
             'kota' => 'required',
             'unit' => 'required',
-            'tanggal' => 'required',
+            // 'tanggal' => 'required',
         ]);
         
         // Check errors
@@ -124,6 +124,7 @@ class WarakawuriController extends Controller
             $warakawuri->nama = $request->nama_warakawuri;
             $warakawuri->status = 1;
             $warakawuri->tanggal_md = null;
+            $warakawuri->tanggal_md_pasangan = DateTimeExt::change($request->tanggal);
             $warakawuri->save();
 
             // Redirect
@@ -181,7 +182,7 @@ class WarakawuriController extends Controller
     {
         // Validation
         $validator = Validator::make($request->all(), [
-            'tanggal' => 'required',
+            // 'tanggal' => 'required',
         ]);
         
         // Check errors
