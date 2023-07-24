@@ -53,6 +53,12 @@ Route::group(['middleware' => ['faturhelper.admin']], function() {
     // Route::get('/admin/rekap/detail/{id}', 'RekapController@detail')->name('admin.rekap.detail');
     Route::get('/admin/rekap/export-all', 'RekapController@exportAll')->name('admin.rekap.export-all');
     Route::get('/admin/rekap/export/{id}', 'RekapController@export')->name('admin.rekap.export');
+
+    // Presensi
+    Route::get('/admin/presensi', 'PresensiController@index')->name('admin.presensi.index');
+    Route::get('/admin/presensi/detail', 'PresensiController@detail')->name('admin.presensi.detail');
+    Route::post('/admin/presensi/import', 'PresensiController@import')->name('admin.presensi.import');
+    Route::post('/admin/presensi/delete', 'PresensiController@delete')->name('admin.presensi.delete');
 });
 
 \Ajifatur\Helpers\RouteExt::auth();

@@ -71,6 +71,8 @@ class RekapController extends Controller
     /**
      * Export to Excel
      *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function export(Request $request, $id)
