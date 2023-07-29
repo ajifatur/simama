@@ -12,7 +12,7 @@ return [
     'auth' => [
         'allow_login_by_email' => false,
         'non_admin_can_login' => false,
-        'socialite' => false
+        'socialite' => true
     ],
     
 ];
